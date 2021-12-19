@@ -1,10 +1,16 @@
 package com.example.notes.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -12,6 +18,8 @@ import com.example.notes.Model.Notes;
 import com.example.notes.R;
 import com.example.notes.ViewModel.NotesViewModel;
 import com.example.notes.databinding.ActivityUpdateNotesBinding;
+import com.example.notes.databinding.BottomSheetDeleteBinding;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -26,6 +34,7 @@ public class UpdateNotesActivity extends AppCompatActivity {
     private String note, title, subtitle, priority;
     private int noteId;
     private NotesViewModel notesViewModel;
+    private BottomSheetDialog bottomSheetDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +48,7 @@ public class UpdateNotesActivity extends AppCompatActivity {
         priority = getIntent().getStringExtra("priority");
         notesViewModel=new ViewModelProvider(this).get(NotesViewModel.class);
         setPriority();
+        initBottomSheet();
 
         binding.idEditTextTitle.setText(title);
         binding.idEditTextSubTitle.setText(subtitle);
@@ -48,6 +58,24 @@ public class UpdateNotesActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void initBottomSheet() {
+        bottomSheetDialog=new BottomSheetDialog(UpdateNotesActivity.this);
+         BottomSheetDeleteBinding binding=BottomSheetDeleteBinding.inflate(getLayoutInflater());
+         bottomSheetDialog.setContentView(binding.getRoot());
+        binding.idTextViewBottomSheetYes.setOnClickListener(l->{
+            Toast.makeText(UpdateNotesActivity.this, "Note Deleted", Toast.LENGTH_SHORT).show();
+            bottomSheetDialog.dismiss();
+            deleteNote();
+        });
+        binding.idTextViewBottomSheetNo.setOnClickListener(l->{
+            bottomSheetDialog.dismiss();
+        });
+    }
+    private void deleteNote(){
+        notesViewModel.deleteNotes(noteId);
+        finish();
     }
 
     private void updateNotes() {
@@ -102,4 +130,17 @@ public class UpdateNotesActivity extends AppCompatActivity {
         });
 
      }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.delete_menu,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId()==R.id.id_button_menu_delete)
+              bottomSheetDialog.show();
+        return super.onOptionsItemSelected(item);
+    }
 }

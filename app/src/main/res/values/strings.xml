@@ -5,4 +5,9 @@
      <string name="date">Date</string>
     <string name="subtitle">SubTitle</string>
     <string name="notes">Notes</string>
+    <string name="delete">Delete</string>
+    <string name="are_you_sure_to_delete">Are You Sure to Delete ?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="about_me">About Me</string>
 </resources>

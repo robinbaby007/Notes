@@ -24,9 +24,9 @@
         <activity
             android:name=".Activity.MainActivity"
             android:exported="false" />
-        <activity android:name=".Activity.InsertNotesActivity"
-            android:exported="false"
-            />
+        <activity
+            android:name=".Activity.InsertNotesActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
